@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Rooms Specification</h2>
+<button class="btn btn-primary mr-2" onclick="window.location.href = '@Url.Action("AdminDashboard","Login")';">BACK</button>
+
+<div id="roomspecscontainer">
+    @{
+        Html.RenderAction("RoomSpecificationTable");
+
+    }
+</div>
+<br />
+<div id="roomspecsactioncontainer">
+
+</div>

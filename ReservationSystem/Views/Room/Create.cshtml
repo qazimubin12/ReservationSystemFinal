@@ -1,0 +1,117 @@
+﻿@model List<RoomSpecification>
+@{
+    ViewBag.Title = "Create";
+}
+
+<form class="forms-sample" id="createroom">
+    <div class="col-md-6 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Create Room</h4>
+                <div class="form-group">
+
+                    <label>Enter Room Name</label>
+                    <input  required type="text" class="form-control" placeholder="Room Name" name="RoomName" />
+                </div>
+
+                <div class="form-group">
+
+                    <label>Enter Room Location</label>
+                    <input required type="text" class="form-control" placeholder="Room Location" name="RoomLocation" />
+                </div>
+                <div class="form-group">
+                    <label>
+                        Select Projection Type
+                    </label>
+                    <select class="form-control" name="RoomSpecificationID">
+                        @foreach (var specs in Model)
+                        {
+                            <option class="form-control" value="@specs.ID">@specs.RoomProjectionSpecs</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>
+                        Have Wifi?
+                    </label>
+                    <input  type="radio" name="HaveWifi" value="True" />Yes
+                    <input type="radio" name="HaveWifi" value="False" />No
+                </div>
+                <div class="form-group">
+                    <label>
+                        Is Available?
+                    </label>
+                    <input type="radio" id="checkedyes" name="Vacant" value="True" />Yes
+                    <input type="radio" id="checkedno" name="Vacant" value="False" />No
+                </div>
+                <div class="form-group">
+                    <label>
+                        Vacant By
+                    </label>
+                    <input name="VacantBy" id="vacantby" disabled class="form-control" placeholder="Vacant By" />
+                </div>
+
+                <button id="btnSave" type="button" class="btn btn-primary mr-2"> SAVE </button>
+                <button id="btnCancel" class="btn btn-light">Cancel</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+<script>
+
+    $("#btnSave").click(function () {
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Create", "Room")',
+            data: $("#createroom").serialize()
+
+        })
+            .done(function (response) {
+                $("#roomcontainer").html(response);
+                swal("Great!", "Room Saved Successfully! ", "success");
+                $("#createroom").html("")
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+            })
+
+    });
+
+
+    $(function () {
+        $("input[name='Vacant']").click(function () {
+            if ($("#checkedno").is(":checked")) {
+                $("#vacantby").removeAttr("disabled");
+                $("#vacantby").focus();
+            } else {
+                document.getElementById('vacantby').value = '';
+                $("#vacantby").attr("disabled", "disabled");
+            }
+        });
+    });
+
+
+  $("#btnCancel").click(function () {
+		var searchValue = '';
+
+		$.ajax({
+			url: '@Url.Action("RoomsTable", "Room")',
+			data: {
+				search: searchValue
+			}
+		})
+        .done(function (response) {
+            $("#roomcontainer").html(response);
+            $("#createroom").html("")
+        })
+        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        	alert("FAIL");
+        });
+	});
+
+
+</script>

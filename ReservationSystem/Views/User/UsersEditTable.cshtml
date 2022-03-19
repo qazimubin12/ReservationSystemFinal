@@ -1,0 +1,92 @@
+﻿@model ReservationSystem.ViewModels.EditUserViewModel
+@{
+    ViewBag.Title = "UsersEditTable";
+}
+
+
+
+
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">User Details</h4>
+        <form class="form-sample" id="usersettingsform">
+            <input type="text" hidden value="@Model.ID" class="form-control" name="ID" id="ID" placeholder="Email">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label for="exampleInputEmail1">First Name</label>
+                        <input type="text" value="@Model.FirstName"  name="FirstName" class="form-control" id="FirstName" placeholder="First Name">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label for="exampleInputPassword1">Last Name</label>
+                        <input type="text" value="@Model.LastName" name="LastName" class="form-control" id="LastName" placeholder="Last Name">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label for="exampleInputUsername1">Username</label>
+                        <input type="text" value="@Model.UserName" name="UserName" class="form-control" id="UserName" placeholder="Username">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label for="exampleInputEmail1">Email</label>
+                        <input type="email" value="@Model.Email" name="Email" class="form-control" id="Email" placeholder="Email">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input type="password" value="@Model.Password" name="Password" class="form-control" id="Password" placeholder="Password">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label for="exampleInputEmail1">Department</label>
+                        <input type="text" value="@Model.Department" name="Department" class="form-control" id="Department" placeholder="Department">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label for="exampleInputPassword1">Phone Number</label>
+                        <input type="text" value="@Model.PhoneNumber" name="PhoneNumber" class="form-control" id="PhoneNumber" placeholder="PhoneNumber">
+                    </div>
+                </div>
+
+            </div>
+            <button type="button" id="btnUpdate" class="btn btn-primary mr-2"> UPDATE </button>
+            <button onclick="window.location.href ='@Url.Action("UserDashboard","Login")';" type="button" class="btn btn-light">Cancel</button>
+        </form>
+    </div>
+</div>
+
+
+<script>
+   $("#btnUpdate").click(function () {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("EditUser", "User")',
+            data: $("#usersettingsform").serialize(),
+
+        })
+            .done(function (response) {
+                swal("Great!", "User Settings Updated Successfully! ", "success");
+                location.reload();
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Fail");
+            })
+
+    });
+
+</script>

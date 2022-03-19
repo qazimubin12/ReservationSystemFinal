@@ -1,0 +1,104 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+}
+
+<form method="post" id="createuser" class="forms-sample">
+    <div class="col-md-6 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h2>Create User</h2>
+                <div class="form-group">
+                    <label>Enter First Name </label>
+                    <input  required type="text" class="form-control" name="FirstName" placeholder="Enter First Name" />
+                </div>
+
+                <div class="form-group">
+                    <label>Enter Last Name </label>
+                    <input required type="text" class="form-control" name="LastName" placeholder="Enter Last Name" />
+                </div>
+
+                <div class="form-group">
+                    <label>Enter Department Name </label>
+                    <input required type="text" class="form-control" name="Department" placeholder="Enter Department" />
+                </div>
+
+                <div class="form-group">
+                    <label>Enter User Name </label>
+                    <input required type="text" class="form-control" name="UserName" placeholder="Enter UserName" />
+                </div>
+
+                <div class="form-group">
+                    <label>Enter Password  </label>
+                    <input required type="password" class="form-control" name="Password" placeholder="Enter Password" />
+                </div>
+
+                <div class="form-group">
+                    <label>Enter Phone Number  </label>
+                    <input required type="text" class="form-control" name="PhoneNumber" placeholder="Enter Phone Number" />
+                </div>
+
+                <div class="form-group">
+                    <label>Enter Email  </label>
+                    <input required type="email" class="form-control" name="Email" placeholder="Enter Email" />
+                </div>
+
+                <div class="form-group">
+                    <label>Select Role  </label>
+                    <select name="Role" class="form-control">
+                        <option value="Admin" class="form-control">
+                            Admin
+                        </option>
+                        <option value="User" class="form-control">
+                            User
+                        </option>
+                    </select>
+                </div>
+
+                <button id="btnSave" type="button" class="btn btn-icon-text mb-3 mb-sm-0 btn-inverse-primary font-weight-normal">SAVE</button>
+                <button id="btnCancel" class="btn btn-light">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<script>
+
+    $("#btnSave").click(function () {
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Create", "User")',
+            data: $("#createuser").serialize()
+        })
+
+        .done(function (response) {
+            $("#userscontainer").html(response);
+            $("#createuser").html("");
+        })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            })
+
+    });
+
+     $("#btnCancel").click(function () {
+		var searchValue = '';
+
+		$.ajax({
+			url: '@Url.Action("UsersTable", "User")',
+			data: {
+				search: searchValue
+			}
+		})
+        .done(function (response) {
+            $("#userscontainer").html(response);
+            $("#createuser").html("")
+        })
+        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        	alert("FAIL");
+        });
+	});
+</script>

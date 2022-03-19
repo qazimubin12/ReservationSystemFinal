@@ -1,0 +1,117 @@
+﻿@model Room
+@{
+    ViewBag.Title = "Create";
+    
+}
+
+
+<form class="forms-sample" id="createreservation">
+    <div class="col-md-6 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Book Reservation</h4>
+                <input type="text" name="RoomID" hidden value="@Model.ID" />
+
+
+
+
+
+                <input type="text" name="RoomSpecificationID" hidden value="@Model.RoomSpecification.ID" />
+
+
+                <div class="form-group">
+                    <label>Have Wifi:</label>
+                    <input disabled type="text" id="HaveWifi" value="@ViewBag.havewifi" name="HaveWifi" />
+                </div>
+                <div class="form-group">
+
+                    <label>Room Name:</label>
+                    <input disabled type="text" id="Room" value="@Model.RoomName" name="RoomName" />
+                </div>
+
+                <div class="form-group">
+
+                    <label>Enter Reservation Agenda</label>
+                    <input type="text" class="form-control" id="ReservationAgenda" placeholder="Reservation Agenda" name="ReservationAgenda" />
+                </div>
+
+                <div class="form-group">
+
+                    <label>Enter Reservation Date and Time</label>
+                    <input type="datetime-local" id="ReservationTime" class="form-control" name="ReservationTime" />
+                </div>
+
+
+               
+
+                    <div class="form-group">
+
+                        <input hidden type="text" class="form-control" id="BookedBy" value="@Session["UserName"]" name="BookedBy" />
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Vacant By</label>
+                        <input type="text" class="form-control" id="VacantBy" name="VacantBy" />
+                    </div>
+
+                    <button id="btnSave" type="button" class="btn btn-primary mr-2"> BOOK ROOM </button>
+                    <button id="btnCancel" type="button" class="btn btn-light">Cancel</button>
+                </div>
+            </div>
+    </div>
+</form>
+
+
+<script>
+
+
+    var SendEmail = function () {
+
+        $.ajax({
+            type: "POST",
+            data: $("#createreservation").serialize(),
+            url: "@Url.Action("SendMailToUser","Reservation")",
+            success: function (data) {
+                alert("Success");
+            }
+        })
+    }
+
+
+    $("#btnCancel").click(function () {
+        focusAction2();
+        $("#createreservation").html("")
+
+    });
+
+    function focusAction2() {
+        $('html, body').animate({
+            scrollTop: $("#reservationactioncontainer").offset().top - 100
+        }, 1000);
+    }
+    
+
+
+    $("#btnSave").click(function () {
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Create", "Reservation")',
+            data: $("#createreservation").serialize()
+
+        })
+            .done(function (response) {
+                $("#reservationcontainer").html(response);
+                SendEmail();
+                swal("Great!", "Reservation Done Successfully! An Email has been sent to you. ", "success");
+                $("#createreservation").html("")
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+            })
+
+    });
+
+
+</script>

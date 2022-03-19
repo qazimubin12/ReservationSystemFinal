@@ -1,0 +1,103 @@
+﻿@model ReservationSystem.ViewModels.ReservationSearchViewModel
+
+@{
+    ViewBag.Title = "ReservationTable";
+}
+
+
+<div class="table-responsive">
+    <h2>Available Rooms</h2>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td>Room Name</td>
+                <td>Have Wifi</td>
+                <td>Room Location</td>
+                <td>Projection Type</td>
+                <td>Action</td>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var room in Model.Rooms)
+            {
+                <tr>
+                    <td>@room.RoomName</td>
+                    @if (@room.HaveWifi == true)
+                    {
+                        <td>Yes</td>
+                    }
+                    else
+                    {
+                        <td>No</td>
+                    }
+                    @{ if (room.RoomLocation != null)
+                        {
+                            <td>@room.RoomLocation</td>
+                        }
+                        else
+                        {
+                            <td>--</td>
+                        }
+                    }
+                    <td>@room.RoomSpecification.RoomProjectionSpecs</td>
+                    <td>
+                        <button type="button" class="btnBookIt btn btn-icon-text mb-3 mb-sm-0 btn-inverse-warning font-weight-normal" data-id="@room.ID">BOOK IT</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+
+
+    function focusAction() {
+        $('html, body').animate({
+            scrollTop: $("#reservationactioncontainer").offset().top - 100
+        }, 1000);
+    }
+
+
+
+     $("#searchBtn").click(function () {
+         var searchvalue = $("#availableroomsearch").val();
+
+        $.ajax({
+            url: '@Url.Action("ReservationTable", "Reservation")',
+            data: {
+                search: searchvalue
+            }
+        })
+            .done(function (response) {
+                $("#reservationcontainer").html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+            })
+
+    });
+
+
+    $(".btnBookIt").click(function () {
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("Create", "Reservation")',
+            data: {
+            ID: $(this).attr('data-id')
+            }
+
+            })
+            .done(function (response) {
+                $("#reservationactioncontainer").html(response);
+
+                focusAction();
+            })
+            .fail(function (sXMLHttpRequest, textStatus, errorThrown) {
+            alert("Fail");
+            })
+
+ });
+</script>

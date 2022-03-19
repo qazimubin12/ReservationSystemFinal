@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewBag.Title = "MyReseservationIndex";
+}
+
+<h2>My Reservations</h2>
+<button class="btn btn-primary mr-2" onclick="window.location.href = '@Url.Action("UserDashboard","Login")';">BACK</button>
+<div id="myreservationcontainer">
+    @{
+        Html.RenderAction("ViewMyReservations");
+
+    }
+</div>

@@ -1,0 +1,130 @@
+﻿@model ReservationSystem.ViewModels.EditRoomViewModel
+@{
+    ViewBag.Title = "Edit";
+    var vacancytruechecked = Model.Vacant ? "checked" : string.Empty;
+    var vacancyfalsechecked = !Model.Vacant ? "checked" : string.Empty;
+
+    var wiftruechecked = Model.HaveWifi ? "checked" : string.Empty;
+    var wififalsechecked = !Model.HaveWifi ? "checked" : string.Empty;
+
+
+}
+
+
+<form class="form-sample" id="editroom">
+    <div class="col-md-6 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Edit Room</h4>
+
+                <div class="form-group">
+
+                    <input name="ID" hidden value="@Model.ID" />
+                    <label>Enter Room Name</label>
+                    <input required type="text" value="@Model.RoomName" class="form-control" placeholder="Room Name" name="RoomName" />
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Enter Room Location</label>
+                    @{ if (Model.RoomLocation != null)
+                        {
+            <input type="text" required value="@Model.RoomLocation" class="form-control" placeholder="Room Location" name="RoomLocation" /> }
+                        else
+                        {
+            <input type="text" required value="--" class="form-control" placeholder="Room Location" name="RoomLocation" /> } }
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        Select Projection Type
+                    </label>
+                    <select class="form-control" name="RoomSpecificationID">
+                        @foreach (var specs in Model.RoomSpecifications)
+                        {
+            <option class="form-control" value="@specs.ID">@specs.RoomProjectionSpecs</option>}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>
+                        Have Wifi?
+                    </label>
+                    <input type="radio" name="HaveWifi" value="True" @wiftruechecked />Yes
+                    <input type="radio" name="HaveWifi" value="False" @wififalsechecked />No
+                </div>
+                <div class="form-group">
+                    <label>
+                        Is Available?
+                    </label>
+                    <input type="radio" id="checkedyes" name="Vacant" value="True" @vacancytruechecked />Yes
+                    <input type="radio" id="checkedno" name="Vacant" value="False" @vacancyfalsechecked />No
+                </div>
+                <div class="form-group">
+                    <label>
+                        Vacant By
+                    </label>
+                    <input name="VacantBy" disabled id="vacantby" class="form-control" value="@Model.VacantBy" placeholder="Vacant By" />
+                </div>
+
+                <button class="btn btn-icon-text mb-3 mb-sm-0 btn-inverse-primary font-weight-normal" type="button" id="btnUpdate">UPDATE</button>
+                <button id="btnCancel" class="btn btn-light">Cancel</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+
+    $("#btnUpdate").click(function () {
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Edit", "Room")',
+            data: $("#editroom").serialize()
+
+        })
+            .done(function (response) {
+                $("#roomcontainer").html(response);
+                swal("Great!", "Room Updated Successfully!", "success");
+                $("#editroom").html("")
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+            })
+
+    });
+
+
+     $("#btnCancel").click(function () {
+		var searchValue = '';
+
+		$.ajax({
+			url: '@Url.Action("RoomsTable", "Room")',
+			data: {
+				search: searchValue
+			}
+		})
+        .done(function (response) {
+            $("#roomcontainer").html(response);
+            $("#editroom").html("")
+        })
+        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        	alert("FAIL");
+        });
+	});
+
+
+    $(function () {
+        $("input[name='Vacant']").click(function () {
+            if ($("#checkedno").is(":checked")) {
+                $("#vacantby").removeAttr("disabled");
+                $("#vacantby").focus();
+            } else {
+                document.getElementById('vacantby').value = '';
+                $("#vacantby").attr("disabled", "disabled");
+            }
+        });
+    });
+
+</script>

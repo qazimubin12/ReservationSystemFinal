@@ -1,0 +1,122 @@
+﻿@model ReservationSystem.ViewModels.ReservationSearchViewModel
+
+@{ ViewBag.Title = "MasterReservationTable"; }
+
+<div class="row">
+    <div class="col">
+        <div class=" col-md-12 table-responsive">
+            <table style="width:80%; overflow: scroll;" class="table table-striped table-condensed">
+                <thead>
+                    <tr>
+                        <td>Room Name</td>
+                        <td hidden>Room ID</td>
+                        <td hidden>Room SpecsID</td>
+                        <td>Wifi</td>
+                        <td>Room Location</td>
+                        <td>Projection</td>
+                        <td>Booked By</td>
+                        <td>Vacant By</td>
+                        <td>Reservation Time</td>
+                        <td>Agenda</td>
+                        <td>Status</td>
+                        <td>Action</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Reservations.Count != 0)
+                    {
+                        foreach (var room in Model.Rooms)
+                        {
+                    <tr>
+                        <td>@room.RoomName</td>
+                        <td id="RoomID" name="RoomID" hidden>@room.ID</td>
+                        <td id="RoomSpecificationID" name="RoomSpecificationID" hidden>@room.RoomSpecification.ID</td>
+                        @if (@room.HaveWifi == true)
+                        {
+                          <td>Yes</td>
+                        }
+                        else
+                        {
+                            <td>No</td>
+                        }
+                        @{if (room.RoomLocation != null)
+                            {
+                                <td>@room.RoomLocation</td>
+                            }
+                            else
+                            {
+                                <td>--</td>
+                            }
+                            }
+                        <td>@room.RoomSpecification.RoomProjectionSpecs</td>
+
+                        @foreach (var reservation in Model.Reservations)
+                        {
+                    <td>@reservation.BookedBy</td>
+                    <td>@reservation.VacantBy</td>
+                    <td>@reservation.ReservationTime</td>
+                    <td>@reservation.ReservationAgenda</td>
+                    <td>@reservation.MeetingStatus</td>
+
+                    <td>
+                        <button type="button" class="btnEdit btn btn-icon-text mb-3 mb-sm-0 btn-inverse-warning font-weight-normal" data-id="@reservation.ID">EDIT</button>
+                        <button type="button" class="btnDelete btn btn-icon-text mb-3 mb-sm-0 btn-inverse-warning font-weight-normal" data-id="@reservation.ID">DELETE</button>
+                    </td>
+                        }
+                    </tr> }
+                            }
+                            else
+                            {
+                <tr>
+                    <td class="text-danger" colspan="4"> No Reservation Found.</td>
+                </tr>
+                            }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+<script>
+    $(".btnEdit").click(function () {
+        $.ajax({
+            url: '@Url.Action("Edit", "MasterReservation")',
+            data: {
+                ID: $(this).attr('data-id')
+            }
+
+        })
+            .done(function (response) {
+                $("#masterreservationactioncontainer").html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Fail");
+            })
+
+    });
+
+
+
+    $(".btnDelete").click(function () {
+        var confirmdelete = confirm("Are you sure want to delete?");
+        if (confirmdelete) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Delete", "MasterReservation")',
+                data: {
+                    ID: $(this).attr('data-id')
+
+                }
+
+            })
+                .done(function (response) {
+                    $("#masterreservationcontainer").html(response);
+                })
+                .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("FAIL");
+                });
+        }
+
+    });
+</script>
+

@@ -1,0 +1,96 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+}
+
+<form class="forms-sample" id="createmasterreservation">
+    <div class="col-md-6 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Book Reservation</h4>
+                <input type="text" name="RoomID" hidden value="@Model.ID" />
+
+
+
+
+
+                <input type="text" name="RoomSpecificationID" hidden value="@Model.RoomSpecification.ID" />
+
+
+                <div class="form-group">
+                    <label>Have Wifi:</label>
+                    <input disabled type="text" id="HaveWifi" value="@ViewBag.havewifi" name="HaveWifi" />
+                </div>
+                <div class="form-group">
+
+                    <label>Room Name:</label>
+                    <input disabled type="text" id="Room" value="@Model.RoomName" name="HaveWifi" />
+                </div>
+
+                <div class="form-group">
+
+                    <label>Enter Reservation Agenda</label>
+                    <input type="text" class="form-control" id="ReservationAgenda" placeholder="Reservation Agenda" name="ReservationAgenda" />
+                </div>
+
+                <div class="form-group">
+
+                    <label>Enter Reservation Date and Time</label>
+                    <input type="datetime-local" id="ReservationTime" class="form-control" name="ReservationTime" />
+                </div>
+
+                <div class="form-group">
+
+                    <input hidden type="text" class="form-control" id="BookedBy" value="@Session["UserName"]" name="BookedBy" />
+                </div>
+
+                <div class="form-group">
+
+                    <label>Vacant By</label>
+                    <input type="text" class="form-control" id="VacantBy" name="VacantBy" />
+                </div>
+
+                <button id="btnSave" type="button" class="btn btn-primary mr-2"> BOOK ROOM </button>
+                <button id="btnCancel" type="button" class="btn btn-light">Cancel</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<script>
+
+    $("#btnCancel").click(function () {
+        focusAction2();
+        $("#createmasterreservation").html("")
+
+    });
+
+    function focusAction2() {
+        $('html, body').animate({
+            scrollTop: $("#reservationactioncontainer").offset().top - 100
+        }, 1000);
+    }
+
+
+
+    $("#btnSave").click(function () {
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Create", "Reservation")',
+            data: $("#createmasterreservation").serialize()
+
+        })
+            .done(function (response) {
+                $("#masterreservationcontainer").html(response);
+                $("#createmasterreservation").html("")
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+            })
+
+    });
+
+
+</script>

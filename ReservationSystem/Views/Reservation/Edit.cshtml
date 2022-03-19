@@ -1,0 +1,94 @@
+﻿@model ReservationSystem.ViewModels.EditReservationViewModel
+@{
+    ViewBag.Title = "Edit";
+}
+<form class="forms-sample" id="updatereservation">
+    <div class="col-md-6 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Book Reservation</h4>
+                <input type="text" name="ID" hidden value="@Model.ID" />
+                <input type="text" name="RoomID" hidden value="@Model.Room.ID" />
+
+
+                <input type="text" name="RoomSpecificationID" hidden value="@Model.RoomSpecification.ID" />
+
+
+                <div class="form-group">
+                    <label>Have Wifi:</label>
+                    <input disabled type="text" id="HaveWifi" value="@ViewBag.havewifi" name="HaveWifi" />
+                </div>
+                <div class="form-group">
+
+                    <label>Room Name:</label>
+                    <input disabled type="text" id="Room" value="@Model.Room.RoomName" name="RoomName" />
+                </div>
+
+                <div class="form-group">
+
+                    <label>Enter Reservation Agenda</label>
+                    <input type="text" class="form-control" value="@Model.ReservationAgenda" id="ReservationAgenda" placeholder="Reservation Agenda" name="ReservationAgenda" />
+                </div>
+
+                <div class="form-group">
+
+                    <label>Enter Reservation Date and Time</label>
+                    <input type="datetime-local" id="ReservationTime" value="@Model.ReservationTime" class="form-control" name="ReservationTime" />
+                </div>
+
+                <div class="form-group">
+
+                    <input hidden type="text" value="@Model.BookedBy" class="form-control" id="BookedBy"  name="BookedBy" />
+                </div>
+
+                <div class="form-group">
+
+                    <label>Vacant By</label>
+                    <input type="text" class="form-control" value="@Model.VacantBy" id="VacantBy" name="VacantBy" />
+                </div>
+
+                <button id="btnSave" type="button" class="btn btn-primary mr-2">UPDATE </button>
+                <button id="btnCancel" type="button" class="btn btn-light">Cancel</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<script>
+
+
+     $("#btnUpdate").click(function () {
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Edit", "Room")',
+            data: $("#updatereservation").serialize()
+
+        })
+            .done(function (response) {
+                $("#reservationcontainer").html(response);
+                $("#updatereservation").html("")
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+            })
+
+    });
+
+
+
+    $("#btnCancel").click(function () {
+        focusAction2();
+        $("#updatereservation").html("")
+
+    });
+
+    function focusAction2() {
+        $('html, body').animate({
+            scrollTop: $("#reservationactioncontainer").offset().top - 100
+        }, 1000);
+    }
+
+
+</script>

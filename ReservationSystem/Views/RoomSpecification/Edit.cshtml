@@ -1,0 +1,68 @@
+﻿@model  RoomSpecification
+@{
+    ViewBag.Title = "Edit";
+}
+
+
+<form method="post" id="editroomspecs">
+    <div class="col-md-6 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-header">
+                <h2>Edit Room Specification</h2>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label> Enter Room Specification </label>
+                    <input hidden name="ID" value="@Model.ID" />
+                    <input class="form-control" name="RoomProjectionSpecs" value="@Model.RoomProjectionSpecs" />
+                </div>
+
+                <button id="btnUpdate" class="btn btn-icon-text mb-3 mb-sm-0 btn-inverse-primary font-weight-normal" type="button">UPDATE</button>
+                <button id="btnCancel" class="btn btn-light">Cancel</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<script>
+
+    $("#btnUpdate").click(function () {
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Edit", "RoomSpecification")',
+            data: $("#editroomspecs").serialize(),
+
+
+        })
+            .done(function (response) {
+                $("#roomspecscontainer").html(response);
+                $("#editroomspecs").html("")
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Fail");
+            })
+
+    });
+
+      $("#btnCancel").click(function () {
+		var searchValue = '';
+
+		$.ajax({
+			url: '@Url.Action("RoomSpecificationTable", "RoomSpecification")',
+			data: {
+				search: searchValue
+			}
+		})
+        .done(function (response) {
+            $("#roomspecscontainer").html(response);
+            $("#editroomspecs").html("")
+        })
+        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        	alert("FAIL");
+        });
+	});
+
+
+</script>

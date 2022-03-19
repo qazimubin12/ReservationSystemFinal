@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Master Reservations</h2>
+<button class="btn btn-primary mr-2" onclick="window.location.href = '@Url.Action("AdminDashboard","Login")';">BACK</button>
+<div id="masterreservationcontainer">
+    @{
+        Html.RenderAction("MasterReservationTable");
+
+    }
+</div>
+<br />
+<div id="masterreservationactioncontainer">
+
+</div>
+

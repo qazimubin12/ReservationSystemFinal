@@ -1,0 +1,110 @@
+﻿@model List<Users>
+@{
+    ViewBag.Title = "UsersTable";
+}
+
+<h4>Users</h4>
+<div>
+
+    <button type="button" class="btn btn-icon-text mb-3 mb-sm-0 btn-inverse-success font-weight-normal" id="newBtn">NEW</button>
+
+</div>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td>First Name</td>
+                <td>Last Name</td>
+                <td>Email</td>
+                <td>UserName</td>
+                <td>Phone Number</td>
+                <td>Department</td>
+                <td>Role</td>
+                <td>Action</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var specs in Model)
+            {
+                <tr>
+                    <td>@specs.FirstName</td>
+                    <td>@specs.LastName</td>
+                    <td>@specs.Email</td>
+                    <td>@specs.UserName</td>
+                    <td>@specs.PhoneNumber</td>
+                    <td>@specs.Department</td>
+                    <td>@specs.Role</td>
+                    <td>
+                        <button class="btnEdit btn btn-icon-text mb-3 mb-sm-0 btn-inverse-warning font-weight-normal" data-id="@specs.ID"> EDIT</button>
+                        <button class="btnDelete btn btn-icon-text mb-3 mb-sm-0 btn-inverse-danger font-weight-normal" data-id="@specs.ID"> DELETE</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+    <script>
+    $("#newBtn").click(function () {
+        $.ajax({
+            url: '@Url.Action("Create", "User")',
+
+        })
+            .done(function (response) {
+                $("#usersactioncontainer").html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            })
+
+    });
+
+
+     $(".btnEdit").click(function () {
+        $.ajax({
+            url: '@Url.Action("Edit", "User")',
+            data: {
+                ID: $(this).attr('data-id')
+            }
+
+        })
+            .done(function (response) {
+                $("#usersactioncontainer").html(response);
+                focusAction2();
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            })
+
+     });
+
+
+
+    function focusAction2() {
+        $('html, body').animate({
+            scrollTop: $("#usersactioncontainer").offset().top - 100
+        }, 1000);
+    }
+
+
+     $(".btnDelete").click(function () {
+        var confirmdelete = confirm("Are you sure want to delete?");
+        if (confirmdelete) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Delete", "User")',
+                data: {
+                    ID: $(this).attr('data-id')
+                }
+
+            })
+                .done(function (response) {
+                    $("#userscontainer").html(response);
+                })
+                .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("FAIL");
+                });
+        }
+
+    });
+    </script>
+

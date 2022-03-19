@@ -1,0 +1,69 @@
+﻿
+@{
+    ViewBag.Title = "AdminDashboard";
+}
+
+<body>
+    <div class="col-12 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4 class="card-title">Admin Dashboard</h4>
+                        <table class="table table-condensed">
+                            <tr>
+                                <td colspan="2">
+                                    <button  onclick="window.location.href = '@Url.Action("Index","MasterReservation")';" class="btn btn-dark btn-block btn-icon-text col-md-12">
+                                        <i class="mdi  btn-icon-prepend mdi-36px"></i>
+                                        <span class="d-inline-block text-left">
+                                            Manage Reservations
+                                        </span>
+                                    </button>
+                                </td>
+                                <td colspan="2">
+                                    <button onclick="window.location.href = '@Url.Action("Index","User")';" class="btn btn-dark btn-block btn-icon-text col-md-12">
+                                        <i class="mdi  btn-icon-prepend mdi-36px"></i>
+                                        <span class="d-inline-block text-left">
+                                            Users
+                                        </span>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <button onclick="window.location.href = '@Url.Action("Index","Room")';" class="btn btn-dark btn-block btn-icon-text col-md-12">
+                                        <i class="mdi  btn-icon-prepend mdi-36px"></i>
+                                        <span class="d-inline-block text-left">
+                                            Rooms
+                                        </span>
+                                    </button>
+                                </td>
+                                <td colspan="2">
+                                    <button onclick="window.location.href = '@Url.Action("Index","RoomSpecification")';" class="btn btn-dark btn-block btn-icon-text col-md-12">
+                                        <i class="mdi  btn-icon-prepend mdi-36px"></i>
+                                        <span class="d-inline-block text-left">
+                                            Rooms Specification
+                                        </span>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <button onclick="window.location.href = '@Url.Action("Login","Login")';" class="btn btn-dark btn-block btn-icon-text col-md-12">
+                                        <i class="mdi  btn-icon-prepend mdi-36px"></i>
+                                        <span class="d-inline-block text-left">
+                                            Log Out
+                                        </span>
+                                    </button>
+                                </td>
+                            </tr>
+
+                        </table>
+                           
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+</body>

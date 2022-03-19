@@ -1,0 +1,107 @@
+﻿@model ReservationSystem.ViewModels.EditUserViewModel
+@{
+    ViewBag.Title = "Edit";
+}
+<form method="post" id="edituser" class="forms-sample">
+    <div class="col-md-6 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h2>Edit User</h2>
+                <div class="form-group">
+                    <input type="hidden" name="ID" value="@Model.ID" />
+                    <label>Enter First Name </label>
+                    <input type="text" value="@Model.FirstName" class="form-control" name="FirstName" placeholder="Enter First Name" />
+                </div>
+
+                <div class="form-group">
+                    <label>Enter Last Name </label>
+                    <input type="text" value="@Model.LastName" class="form-control" name="LastName" placeholder="Enter Last Name" />
+                </div>
+
+                <div class="form-group">
+                    <label>Enter Department Name </label>
+                    <input type="text" value="@Model.Department" class="form-control" name="Department" placeholder="Enter Department" />
+                </div>
+
+                <div class="form-group">
+                    <label>Enter User Name </label>
+                    <input type="text" value="@Model.UserName" class="form-control" name="UserName" placeholder="Enter UserName" />
+                </div>
+
+                <div class="form-group">
+                    <label>Enter Password  </label>
+                    <input type="password" value="@Model.Password" class="form-control" name="Password" placeholder="Enter Password" />
+                </div>
+
+                <div class="form-group">
+                    <label>Enter Phone Number  </label>
+                    <input type="text" value="@Model.PhoneNumber" class="form-control" name="PhoneNumber" placeholder="Enter Phone Number" />
+                </div>
+
+                <div class="form-group">
+                    <label>Enter Email  </label>
+                    <input type="email" value="@Model.Email" class="form-control" name="Email" placeholder="Enter Email" />
+                </div>
+
+                <div class="form-group">
+                    <label>Select Role  </label>
+                    <select class="form-control" name="Roles">
+                        @foreach (string role in Model.AllRoles)
+                        {
+                            if (ViewBag.User_Role == role)
+                            {
+            <option selected class="form-control" value="@Model.Roles">@Model.Roles</option> }
+                            else
+                            {
+            <option class="form-control" value="@role">@role</option>}
+
+                        }
+                    </select>
+                </div>
+
+                <button class="btn btn-icon-text mb-3 mb-sm-0 btn-inverse-primary font-weight-normal" type="button" id="btnUpdate">UPDATE</button>
+                <button id="btnCancel" class="btn btn-light">Cancel</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+
+    $("#btnUpdate").click(function () {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Edit", "User")',
+            data: $("#edituser").serialize(),
+
+        })
+            .done(function (response) {
+                $("#userscontainer").html(response);
+                $("#edituser").html("");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Fail");
+            })
+
+    });
+
+     $("#btnCancel").click(function () {
+		var searchValue = '';
+
+		$.ajax({
+			url: '@Url.Action("UsersTable", "User")',
+			data: {
+				search: searchValue
+			}
+		})
+        .done(function (response) {
+            $("#userscontainer").html(response);
+            $("#edituser").html("")
+        })
+        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        	alert("FAIL");
+        });
+	});
+
+
+</script>

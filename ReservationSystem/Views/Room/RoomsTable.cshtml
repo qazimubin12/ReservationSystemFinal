@@ -1,0 +1,187 @@
+﻿@model ReservationSystem.ViewModels.RoomSearchViewModel
+@{
+    ViewBag.Title = "RoomsTable";
+}
+
+<div>
+    <form method="post">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <input class="form-control" name="search" id="roomsearch" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <button class="btn btn-icon-text mb-3 mb-sm-0 btn-inverse-info font-weight-normal" type="button" id="searchBtn">SEARCH</button>
+                    <button type="button" class="btn btn-icon-text mb-3 mb-sm-0 btn-inverse-success font-weight-normal" id="newBtn">NEW</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td>Room Name</td>
+                <td>Have Wifi</td>
+                <td>Vacancy</td>
+                <td>Projection Type</td>
+                <td>Vacant By</td>
+                <td>Room Location</td>
+                <td>Action</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var room in Model.Room)
+            {
+                <tr>
+                    <td>@room.RoomName</td>
+                    @if(room.HaveWifi == true)
+                {
+                    <td>Yes</td>
+                }
+                else
+                {
+                    <td>No</td>
+                }
+                    @if(room.Vacant == false)
+                {
+                    <td style="color:red">Unavailable</td>
+                }
+                else
+                {
+                    <td>Available</td>
+                }
+                    @if (@room.RoomSpecification == null)
+                    {
+                        <td>--</td>
+                    }
+                    else
+                    {
+                        <td>@room.RoomSpecification.RoomProjectionSpecs</td>
+                    }
+                    @{if (room.VacantBy != null)
+                        {
+                            <td>@room.VacantBy</td>
+                        }
+                        else
+                        {
+                            <td>--</td>
+                        }
+
+                    }
+                    @{ if (room.RoomLocation != null)
+                        {
+                            <td>@room.RoomLocation</td>
+                        }
+                        else
+                        {
+                            <td>--</td>
+                        }
+                    }
+                    <td>
+                        <button class="btnEdit btn btn-icon-text mb-3 mb-sm-0 btn-inverse-warning font-weight-normal" data-id="@room.ID">EDIT</button>
+                        <button class="btnDelete btn btn-icon-text mb-3 mb-sm-0 btn-inverse-danger font-weight-normal" data-id="@room.ID">DELETE</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+
+
+    
+
+    $("#searchBtn").click(function () {
+        var searchvalue = $("#roomsearch").val();
+
+        $.ajax({
+            url: '@Url.Action("RoomsTable", "Room")',
+            data: {
+                search: searchvalue
+            }
+        })
+            .done(function (response) {
+                $("#roomcontainer").html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+            })
+
+    });
+
+
+    $("#newBtn").click(function () {
+        $.ajax({
+            url: '@Url.Action("Create", "Room")',
+
+        })
+            .done(function (response) {
+                $("#roomactioncontainer").html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            })
+
+    });
+
+
+    $(".btnEdit").click(function () {
+
+        $.ajax({
+            url: '@Url.Action("Edit", "Room")',
+            data: {
+                ID: $(this).attr('data-id')
+            }
+
+        })
+            .done(function (response) {
+                $("#roomactioncontainer").html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Fail");
+            })
+
+    });
+
+
+
+    $(".btnDelete").click(function () {
+
+        swal({
+            title: "Confirm",
+            text: "Are you sure want to delete this Room?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+
+          .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("Delete", "Room")',
+                        data: {
+                            ID: $(this).attr("data-id")
+                        }
+                    })
+                        .done(function (response) {
+                            $("#roomcontainer").html(response);
+                            swal("Room Deleted Successfully", {
+                                icon: "success",
+                            });
+
+                        })
+                        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert("FAIL");
+                        });
+                }
+            });
+
+
+    });
+</script>
