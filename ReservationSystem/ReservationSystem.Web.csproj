@@ -1113,8 +1113,6 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Views\Shared\pwabuilder-sw-register.js" />
-    <Content Include="Views\Shared\pwabuilder-sw.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1157,7 +1155,6 @@
     <Content Include="Views\User\UsersEditTable.cshtml" />
     <Content Include="Views\Reservation\ViewMyReservations.cshtml" />
     <Content Include="Views\Reservation\MyReseservationIndex.cshtml" />
-    <Content Include="Views\Shared\manifest.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
