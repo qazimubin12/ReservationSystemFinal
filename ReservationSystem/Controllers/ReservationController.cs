@@ -27,7 +27,7 @@ namespace ReservationSystem.Controllers
         [HttpGet]
         public ActionResult Create(int ID)
         {
-            EditReservationViewModel model = new EditReservationViewModel();
+            NewReservationViewModel model = new NewReservationViewModel();
             model.Room = RoomsService.Instance.GetRoomWithSpecs(ID);
             if(model.Room.HaveWifi == false)
             {

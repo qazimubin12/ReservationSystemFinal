@@ -78,7 +78,6 @@ namespace ReservationSystem.Controllers
         {
             
             model.Reservations = MasterReservationsService.Instance.GetMasterReservations();
-            model.Rooms = RoomsService.Instance.GetNonVacantRooms();
             if (model != null)
             {
                 return PartialView("MasterReservationTable", model);

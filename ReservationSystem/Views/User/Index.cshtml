@@ -6,16 +6,7 @@
 <div id="userscontainer">
 
    
-    @if (Session["Role"].ToString() == "Admin")
-    {
-        <button  class="btn btn-primary mr-2" onclick="window.location.href = '@Url.Action("AdminDashboard","Login")';">BACK</button>
-
-    }
-    else
-    {
-        <button class="btn btn-primary mr-2" onclick="window.location.href = '@Url.Action("UserDashboard","Login")';">BACK</button>
-
-    }
+  
 
     @{
 

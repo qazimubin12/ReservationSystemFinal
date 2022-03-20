@@ -53,6 +53,8 @@ namespace ReservationSystem.ViewModels
     public class NewReservationViewModel
     {
         public int RoomID { get; set; }
+        public virtual Room Room { get; set; }
+
         public int RoomSpecificationID { get; set; }
         public string VacantBy { get; set; }
         public string BookedBy { get; set; }
